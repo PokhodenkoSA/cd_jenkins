@@ -5,10 +5,9 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "ubuntu/trusty64"
-  # config.vm.network "forwarded_port", guest: 80, host: 8080
-
-  # config.vm.provision "shell", inline: <<-SHELL
-  #   sudo apt-get update
-  #   sudo apt-get install -y apache2
-  # SHELL
+  config.vm.provision "docker" do |d|
+    d.run "pokhodenkosa/cd_jenkins",
+	  args: "-d -p 0.0.0.0:49153:8080"
+  end
+  config.vm.network "forwarded_port", guest: 49153, host: 4567
 end
